@@ -21,7 +21,6 @@ const reviewRoute = require("./reviewRoute");
 
 const router = express.Router();
 
-// /products/63970e4168a4532beb64ddd8/review
 router.use("/:productId/review", reviewRoute);
 
 router

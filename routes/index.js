@@ -1,5 +1,4 @@
-const rateLimit = require("express-rate-limit"),
-  routeCategory = require("./categoryRoute"),
+const routeCategory = require("./categoryRoute"),
   routeSubCategory = require("./subCategoryRoute"),
   routeBrand = require("./brandRoute"),
   routeProduct = require("./productRoute"),
@@ -12,17 +11,8 @@ const rateLimit = require("express-rate-limit"),
   routeCart = require("./cartRoute"),
   routeOrder = require("./orderRoute");
 
-const limiter = rateLimit({
-  windowMs: 5 * 60 * 1000, // 5 minutes
-  max: 10, // Limit each IP to 10 requests per `window` (here, per 5 minutes)
-  message:
-    "Too many accounts created from this IP, please try again after an hour",
-  standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
-  legacyHeaders: false, // Disable the `X-RateLimit-*` headers
-});
-
 const mountRoute = (app) => {
-  app.use("/api/v1/categories", limiter, routeCategory);
+  app.use("/api/v1/categories", routeCategory);
   app.use("/api/v1/subcategories", routeSubCategory);
   app.use("/api/v1/brands", routeBrand);
   app.use("/api/v1/products", routeProduct);

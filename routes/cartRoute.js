@@ -32,12 +32,5 @@ router
 router
   .route("/:itemId")
   .put(authProtect, allowedTo("user"), updateProductQuantityInCart);
-// router.delete(
-//   "/:productId",
-//   authProtect,
-//   allowedTo("user"),
-//   ruleRemoveFromFavourite,
-//   removeProductFromFavourite
-// );
 
 module.exports = router;

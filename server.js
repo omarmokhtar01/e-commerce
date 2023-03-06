@@ -11,6 +11,7 @@ const express = require("express"),
   mongoSanitize = require("express-mongo-sanitize"),
   xss = require("xss-clean"),
   toobusy = require("toobusy-js"),
+  rateLimit = require("express-rate-limit"),
   helmet = require("helmet");
 
 // 3- modules import from folders
@@ -19,18 +20,8 @@ const dbConnection = require("./config/database"),
   ApiError = require("./utils/apiError");
 
 // Routes
-const mountRoute = require("./routes"); // ./routes = ./routes/index.js
+const mountRoute = require("./routes");
 const { webhookCheckOut } = require("./Controller/orderServices");
-// const routeCategory = require("./routes/categoryRoute"),
-//   routeSubCategory = require("./routes/subCategoryRoute"),
-//   routeBrand = require("./routes/brandRoute"),
-//   routeProduct = require("./routes/productRoute"),
-//   routeUser = require("./routes/userRoute"),
-//   routeReview = require("./routes/reviewRoute"),
-//   routeAuth = require("./routes/authRoute"),
-//   routeFavourite = require("./routes/favouriteRoute"),
-//   routeAddress = require("./routes/addressRoute"),
-//   routeCoupon = require("./routes/couponRoute");
 
 // Connect DB
 dbConnection();
@@ -70,6 +61,18 @@ app.use(mongoSanitize());
 // to convert script come form body to string
 app.use(xss());
 
+const limiter = rateLimit({
+  windowMs: 5 * 60 * 1000, // 5 minutes
+  max: 10, // Limit each IP to 10 requests per `window` (here, per 5 minutes)
+  message:
+    "Too many accounts created from this IP, please try again after an hour",
+  standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
+  legacyHeaders: false, // Disable the `X-RateLimit-*` headers
+});
+
+// Apply the rate limiting middleware to all requests
+app.use("/api", limiter);
+
 // middleware to protect against HTTP Parameter Pollution attacks
 app.use(
   hpp({
@@ -96,16 +99,6 @@ app.use(function (req, res, next) {
 
 // Mount Routes
 mountRoute(app);
-// app.use("/api/v1/categories", limiter, routeCategory);
-// app.use("/api/v1/subcategories", routeSubCategory);
-// app.use("/api/v1/brands", routeBrand);
-// app.use("/api/v1/products", routeProduct);
-// app.use("/api/v1/users", routeUser);
-// app.use("/api/v1/auth", routeAuth);
-// app.use("/api/v1/review", routeReview);
-// app.use("/api/v1/favourite", routeFavourite);
-// app.use("/api/v1/address", routeAddress);
-// app.use("/api/v1/coupon", routeCoupon);
 
 // Error handling route
 app.all("*", (req, res, next) => {

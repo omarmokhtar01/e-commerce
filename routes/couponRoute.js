@@ -18,11 +18,7 @@ const {
 
 const router = express.Router();
 router.use(authProtect, allowedTo("admin", "manager"));
-router
-  .route("/")
-  .get(getCoupon)
-
-  .post(ruleCreateCoupon, postCoupon);
+router.route("/").get(getCoupon).post(ruleCreateCoupon, postCoupon);
 
 router
   .route("/:id")

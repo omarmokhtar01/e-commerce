@@ -1,8 +1,4 @@
 const express = require("express");
-// const {
-//   ruleCreateAddress,
-//   ruleRemoveFromFavourite,
-// } = require("../utils/validator/address");
 
 const { authProtect, allowedTo } = require("../Controller/authService");
 
@@ -37,15 +33,5 @@ router.post(
   allowedTo("user"),
   createCheckoutSession
 );
-
-//   .get(authProtect, allowedTo("user"), getMyFavList);
-
-// router.delete(
-//   "/:productId",
-//   authProtect,
-//   allowedTo("user"),
-//   ruleRemoveFromFavourite,
-//   removeProductFromFavourite
-// );
 
 module.exports = router;
