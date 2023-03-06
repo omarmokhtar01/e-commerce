@@ -25,11 +25,11 @@
     "xss-clean": "^0.1.1"
   },
   "scripts": {
-    "start": "nodemon index.js"
+    "start": "node server.js"
   },
   "name": "new-nodejs-course",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "server.js",
   "devDependencies": {
     "cross-env": "^7.0.3",
     "eslint": "^8.29.0",
