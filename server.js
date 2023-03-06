@@ -20,6 +20,7 @@ const dbConnection = require("./config/database"),
 
 // Routes
 const mountRoute = require("./routes"); // ./routes = ./routes/index.js
+const { webhookCheckOut } = require("./Controller/orderServices");
 // const routeCategory = require("./routes/categoryRoute"),
 //   routeSubCategory = require("./routes/subCategoryRoute"),
 //   routeBrand = require("./routes/brandRoute"),
@@ -43,6 +44,12 @@ app.options("*", cors());
 
 // compress all responses
 app.use(compression());
+
+app.post(
+  "/webhook",
+  express.raw({ type: "application/json" }),
+  webhookCheckOut
+);
 
 // Middlewares
 // Helmet helps you secure your Express apps by setting various HTTP headers. It's not a silver bullet, but it can help!
@@ -109,7 +116,7 @@ app.all("*", (req, res, next) => {
 app.use(globalError);
 
 // Listenning app
-const { PORT } = process.env;
+const { PORT } = process.env || 3000;
 const server = app.listen(PORT, () => {
   console.log(`Listineng on Port ${PORT}`);
 });
