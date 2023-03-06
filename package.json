@@ -25,7 +25,7 @@
     "xss-clean": "^0.1.1"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node index.js"
   },
   "name": "new-nodejs-course",
   "version": "1.0.0",
